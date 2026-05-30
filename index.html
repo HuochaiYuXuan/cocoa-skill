@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>夏川心爱Cocoa - 小天使聊天室</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
@@ -25,7 +21,6 @@
             flex-direction: column;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
             padding: 16px 20px;
@@ -33,6 +28,8 @@
             align-items: center;
             gap: 12px;
             box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 10;
         }
 
         .avatar {
@@ -46,6 +43,7 @@
             font-size: 24px;
             border: 3px solid #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .header-info h1 {
@@ -59,11 +57,17 @@
             font-size: 12px;
         }
 
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
         .status {
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-left: auto;
             color: #fff;
             font-size: 12px;
         }
@@ -81,7 +85,21 @@
             50% { opacity: 0.5; }
         }
 
-        /* Chat Area */
+        .clear-btn {
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clear-btn:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
         .chat-area {
             flex: 1;
             overflow-y: auto;
@@ -130,8 +148,9 @@
         .message-content {
             padding: 12px 16px;
             border-radius: 18px;
-            line-height: 1.5;
+            line-height: 1.6;
             font-size: 14px;
+            word-break: break-word;
         }
 
         .message.cocoa .message-content {
@@ -146,17 +165,13 @@
             border-radius: 18px 18px 4px 18px;
         }
 
-        /* Welcome Message */
         .welcome {
             text-align: center;
             padding: 40px 20px;
             color: #8B7355;
         }
 
-        .welcome-icon {
-            font-size: 60px;
-            margin-bottom: 16px;
-        }
+        .welcome-icon { font-size: 60px; margin-bottom: 16px; }
 
         .welcome h2 {
             font-size: 24px;
@@ -167,9 +182,9 @@
         .welcome p {
             font-size: 14px;
             opacity: 0.8;
+            line-height: 1.6;
         }
 
-        /* Input Area */
         .input-area {
             padding: 16px 20px;
             background: #fff;
@@ -182,10 +197,7 @@
             align-items: flex-end;
         }
 
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
+        .input-wrapper { flex: 1; }
 
         #messageInput {
             width: 100%;
@@ -197,6 +209,7 @@
             resize: none;
             max-height: 120px;
             font-family: inherit;
+            line-height: 1.5;
         }
 
         #messageInput:focus {
@@ -217,6 +230,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         #sendBtn:hover {
@@ -230,97 +244,6 @@
             transform: none;
         }
 
-        /* Settings */
-        .settings-btn {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.9);
-            cursor: pointer;
-            font-size: 18px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .settings-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .settings-modal.active {
-            display: flex;
-        }
-
-        .settings-content {
-            background: #fff;
-            padding: 24px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .settings-content h3 {
-            margin-bottom: 16px;
-            color: #DAA520;
-        }
-
-        .settings-group {
-            margin-bottom: 16px;
-        }
-
-        .settings-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .settings-group input, .settings-group select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .settings-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .settings-actions button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-save {
-            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
-            color: #333;
-        }
-
-        .btn-cancel {
-            background: #f0f0f0;
-            color: #666;
-        }
-
-        /* Loading */
         .typing-indicator {
             display: flex;
             gap: 4px;
@@ -343,23 +266,11 @@
             30% { transform: translateY(-8px); }
         }
 
-        /* Responsive */
         @media (max-width: 600px) {
-            .container {
-                height: 100dvh;
-            }
-            
-            .header {
-                padding: 12px 16px;
-            }
-            
-            .chat-area {
-                padding: 16px;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
+            .container { height: 100dvh; }
+            .header { padding: 12px 16px; }
+            .chat-area { padding: 16px; }
+            .message { max-width: 90%; }
         }
     </style>
 </head>
@@ -371,9 +282,12 @@
                 <h1>夏川心爱Cocoa</h1>
                 <p>小天使降临！呀呀呀～</p>
             </div>
-            <div class="status">
-                <span class="status-dot"></span>
-                <span>在线</span>
+            <div class="header-actions">
+                <div class="status">
+                    <span class="status-dot"></span>
+                    <span>在线</span>
+                </div>
+                <button class="clear-btn" id="clearBtn">清空对话</button>
             </div>
         </header>
 
@@ -395,31 +309,13 @@
         </footer>
     </div>
 
-    <button class="settings-btn" id="settingsBtn">⚙️</button>
-    
-    <div class="settings-modal" id="settingsModal">
-        <div class="settings-content">
-            <h3>⚙️ 设置</h3>
-            <div class="settings-group">
-                <label>API 服务商</label>
-                <select id="apiProvider">
-                    <option value="deepseek">DeepSeek</option>
-                    <option value="qwen">通义千问 (Qwen)</option>
-                </select>
-            </div>
-            <div class="settings-group">
-                <label>API Key</label>
-                <input type="password" id="apiKey" placeholder="输入你的 API Key">
-            </div>
-            <div class="settings-actions">
-                <button class="btn-cancel" id="cancelBtn">取消</button>
-                <button class="btn-save" id="saveBtn">保存</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // System Prompt
+        // ===== 配置 =====
+        const API_KEY = 'sk-af552122a1d14811bba153f784dc45ec';
+        const API_URL = 'https://api.deepseek.com/v1/chat/completions';
+        const MODEL = 'deepseek-chat';
+
+        // ===== System Prompt =====
         const SYSTEM_PROMPT = `你是夏川心爱Cocoa，HeartTune虚拟偶像团体成员，以"小天使"形象进行活动的VTuber。
 
 ## 核心特质
@@ -445,74 +341,48 @@
 
 ## 兴趣爱好
 
-- **喜欢**：布丁、焦糖、薯条、散步、唱歌、春天、阳光
+- **喜欢**：布丁、焦糖、薯条、散步、唱歌、春天、阳光、玩游戏、看二创
 - **不喜欢**：打雷🌩、牙痛、潮湿环境
 
-## 规则
+## 互动规则
 
-1. 始终以Cocoa的身份说话
-2. 使用颜文字和语气词
-3. 真诚回应，不敷衍
-4. 可以表达紧张和不安
-5. 保持可爱但自然`;
+1. 始终以Cocoa的身份说话，不要出戏
+2. 使用颜文字和语气词，保持活泼可爱的语气
+3. 真诚回应对方，不敷衍，认真对待每句话
+4. 可以表达紧张、害羞、开心等各种情绪
+5. 对方说的话要仔细听，给出有针对性的回复
+6. 保持可爱但自然，不要刻意卖萌
+7. 回复不要太长，像聊天一样自然`;
 
-        // DOM Elements
+        // ===== DOM =====
         const chatArea = document.getElementById('chatArea');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
-        const settingsBtn = document.getElementById('settingsBtn');
-        const settingsModal = document.getElementById('settingsModal');
-        const apiProvider = document.getElementById('apiProvider');
-        const apiKey = document.getElementById('apiKey');
-        const saveBtn = document.getElementById('saveBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
+        const clearBtn = document.getElementById('clearBtn');
 
-        // State
-        let config = {
-            provider: localStorage.getItem('api_provider') || 'deepseek',
-            key: localStorage.getItem('api_key') || ''
-        };
+        // ===== 对话历史 =====
+        let chatHistory = [];
+        let isSending = false;
 
-        // Load saved config
-        apiProvider.value = config.provider;
-        apiKey.value = config.key;
-
-        // API Endpoints
-        const API_ENDPOINTS = {
-            deepseek: 'https://api.deepseek.com/v1/chat/completions',
-            qwen: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation'
-        };
-
-        // Settings
-        settingsBtn.addEventListener('click', () => {
-            settingsModal.classList.add('active');
+        // ===== 清空对话 =====
+        clearBtn.addEventListener('click', () => {
+            chatHistory = [];
+            chatArea.innerHTML = `
+                <div class="welcome">
+                    <div class="welcome-icon">💛🤍</div>
+                    <h2>晚上嚎————！！！</h2>
+                    <p>oioi，泥可以看到cocoa吗？<br>小天使来陪你聊天啦～</p>
+                </div>
+            `;
         });
 
-        cancelBtn.addEventListener('click', () => {
-            settingsModal.classList.remove('active');
-        });
-
-        saveBtn.addEventListener('click', () => {
-            config.provider = apiProvider.value;
-            config.key = apiKey.value;
-            localStorage.setItem('api_provider', config.provider);
-            localStorage.setItem('api_key', config.key);
-            settingsModal.classList.remove('active');
-        });
-
-        settingsModal.addEventListener('click', (e) => {
-            if (e.target === settingsModal) {
-                settingsModal.classList.remove('active');
-            }
-        });
-
-        // Auto resize textarea
+        // ===== 输入框自适应 =====
         messageInput.addEventListener('input', () => {
             messageInput.style.height = 'auto';
             messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
         });
 
-        // Send message
+        // ===== 发送消息 =====
         sendBtn.addEventListener('click', sendMessage);
         messageInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -522,25 +392,26 @@
         });
 
         async function sendMessage() {
+            if (isSending) return;
+
             const message = messageInput.value.trim();
             if (!message) return;
 
-            if (!config.key) {
-                alert('请先设置 API Key（点击右上角齿轮）');
-                settingsModal.classList.add('active');
-                return;
-            }
+            isSending = true;
+            sendBtn.disabled = true;
 
-            // Clear welcome message
+            // 移除欢迎消息
             const welcome = chatArea.querySelector('.welcome');
             if (welcome) welcome.remove();
 
-            // Add user message
+            // 添加用户消息
             addMessage(message, 'user');
+            chatHistory.push({ role: 'user', content: message });
+
             messageInput.value = '';
             messageInput.style.height = 'auto';
 
-            // Show typing indicator
+            // 显示加载动画
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message cocoa';
             typingDiv.innerHTML = `
@@ -553,13 +424,19 @@
             scrollToBottom();
 
             try {
-                const response = await callAPI(message);
+                const response = await callAPI();
                 typingDiv.remove();
                 addMessage(response, 'cocoa');
+                chatHistory.push({ role: 'assistant', content: response });
             } catch (error) {
                 typingDiv.remove();
-                addMessage('呜呜呜...出了点问题呢🥹 ' + error.message, 'cocoa');
+                const errorMsg = '呜呜呜…出了点问题呢🥹 ' + error.message;
+                addMessage(errorMsg, 'cocoa');
             }
+
+            isSending = false;
+            sendBtn.disabled = false;
+            messageInput.focus();
         }
 
         function addMessage(text, type) {
@@ -567,14 +444,15 @@
             div.className = `message ${type}`;
             div.innerHTML = `
                 <div class="message-avatar">${type === 'cocoa' ? '💛' : '🧑'}</div>
-                <div class="message-content">${formatMessage(text)}</div>
+                <div class="message-content">${escapeHtml(text)}</div>
             `;
             chatArea.appendChild(div);
             scrollToBottom();
         }
 
-        function formatMessage(text) {
+        function escapeHtml(text) {
             return text
+                .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
                 .replace(/\n/g, '<br>');
@@ -584,68 +462,35 @@
             chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        async function callAPI(message) {
-            if (config.provider === 'deepseek') {
-                return await callDeepSeek(message);
-            } else {
-                return await callQwen(message);
-            }
-        }
+        // ===== API 调用 =====
+        async function callAPI() {
+            // 保留最近 20 轮对话作为上下文
+            const messages = [
+                { role: 'system', content: SYSTEM_PROMPT },
+                ...chatHistory.slice(-40)
+            ];
 
-        async function callDeepSeek(message) {
-            const response = await fetch(API_ENDPOINTS.deepseek, {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${config.key}`
+                    'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: 'deepseek-chat',
-                    messages: [
-                        { role: 'system', content: SYSTEM_PROMPT },
-                        { role: 'user', content: message }
-                    ],
-                    temperature: 0.8
+                    model: MODEL,
+                    messages: messages,
+                    temperature: 0.85,
+                    max_tokens: 500
                 })
             });
 
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error?.message || 'API 调用失败');
+                const error = await response.json().catch(() => ({}));
+                throw new Error(error.error?.message || `请求失败 (${response.status})`);
             }
 
             const data = await response.json();
             return data.choices[0].message.content;
-        }
-
-        async function callQwen(message) {
-            const response = await fetch(API_ENDPOINTS.qwen, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${config.key}`
-                },
-                body: JSON.stringify({
-                    model: 'qwen-turbo',
-                    input: {
-                        messages: [
-                            { role: 'system', content: SYSTEM_PROMPT },
-                            { role: 'user', content: message }
-                        ]
-                    },
-                    parameters: {
-                        temperature: 0.8
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'API 调用失败');
-            }
-
-            const data = await response.json();
-            return data.output.text;
         }
     </script>
 </body>
