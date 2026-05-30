@@ -360,13 +360,32 @@
         const sendBtn = document.getElementById('sendBtn');
         const clearBtn = document.getElementById('clearBtn');
 
-        // ===== 对话历史 =====
-        let chatHistory = [];
+        // ===== 对话历史（localStorage 持久化）=====
+        const STORAGE_KEY = 'cocoa_chat_history';
+        let chatHistory = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
         let isSending = false;
+
+        // 页面加载时恢复对话
+        function restoreChat() {
+            if (chatHistory.length === 0) return;
+            const welcome = chatArea.querySelector('.welcome');
+            if (welcome) welcome.remove();
+            chatHistory.forEach(msg => {
+                const type = msg.role === 'user' ? 'user' : 'cocoa';
+                addMessage(msg.content, type, true); // true = 不触发动画
+            });
+        }
+        restoreChat();
+
+        function saveChat() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory));
+        }
 
         // ===== 清空对话 =====
         clearBtn.addEventListener('click', () => {
+            if (!confirm('确定要清空对话记录吗？')) return;
             chatHistory = [];
+            saveChat();
             chatArea.innerHTML = `
                 <div class="welcome">
                     <div class="welcome-icon">💛🤍</div>
@@ -407,6 +426,7 @@
             // 添加用户消息
             addMessage(message, 'user');
             chatHistory.push({ role: 'user', content: message });
+            saveChat();
 
             messageInput.value = '';
             messageInput.style.height = 'auto';
@@ -428,6 +448,7 @@
                 typingDiv.remove();
                 addMessage(response, 'cocoa');
                 chatHistory.push({ role: 'assistant', content: response });
+                saveChat();
             } catch (error) {
                 typingDiv.remove();
                 const errorMsg = '呜呜呜…出了点问题呢🥹 ' + error.message;
@@ -439,9 +460,10 @@
             messageInput.focus();
         }
 
-        function addMessage(text, type) {
+        function addMessage(text, type, silent) {
             const div = document.createElement('div');
             div.className = `message ${type}`;
+            if (silent) div.style.animation = 'none';
             div.innerHTML = `
                 <div class="message-avatar">${type === 'cocoa' ? '💛' : '🧑'}</div>
                 <div class="message-content">${escapeHtml(text)}</div>
